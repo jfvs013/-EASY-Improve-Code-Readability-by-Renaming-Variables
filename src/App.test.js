@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
 describe('App Component', () => {
+
   test('renders Task Manager title', () => {
     render(<App />);
     const titleElement = screen.getByText(/Task Manager/i);
@@ -21,17 +22,20 @@ describe('App Component', () => {
     expect(taskElement).toBeInTheDocument();
   });
 
-   test('tasks persist to local storage', () => {
-        render(<App />);
-        const inputElement = screen.getByPlaceholderText(/Add task.../i);
-        const addButtonElement = screen.getByText(/Add Task/i);
+  test('tasks persist to local storage', () => {
+    localStorage.clear();
 
-        fireEvent.change(inputElement, { target: { value: 'Persistent Task' } });
-        fireEvent.click(addButtonElement);
+    const { unmount } = render(<App />);
+    const inputElement = screen.getByPlaceholderText(/Add task.../i);
+    const addButtonElement = screen.getByText(/Add Task/i);
 
-        // Reload the component (simulating a page refresh)
-        render(<App />);
-        const taskElement = screen.getByText(/Persistent Task/i);
-        expect(taskElement).toBeInTheDocument();
-    });
+    fireEvent.change(inputElement, { target: { value: 'Persistent Task' } });
+    fireEvent.click(addButtonElement);
+
+    unmount();
+
+    render(<App />);
+    const taskElement = screen.getByText(/Persistent Task/i);
+    expect(taskElement).toBeInTheDocument();
+  });
 });

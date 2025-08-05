@@ -4,8 +4,8 @@ function TaskForm({ addTask }) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('low');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     if (title.trim()) {
       addTask(title, priority);
       setTitle('');
@@ -17,10 +17,10 @@ function TaskForm({ addTask }) {
       <input
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(event) => setTitle(event.target.value)}
         placeholder="Add task..."
       />
-      <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+      <select value={priority} onChange={(event) => setPriority(event.target.value)}>
         <option value="low">Low</option>
         <option value="medium">Medium</option>
         <option value="high">High</option>
